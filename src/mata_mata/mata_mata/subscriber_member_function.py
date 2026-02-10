@@ -1,3 +1,5 @@
+# subscriber and client is combined into this node
+
 import rclpy
 from rclpy.node import Node
 
@@ -9,16 +11,19 @@ from std_srvs.srv import Empty
 class MinimalSubscriber(Node):
 
     def __init__(self):
+
+        # subscribe node
         super().__init__('minimal_subscriber')
         self.subscription = self.create_subscription(
             Int32,
             'topic',
             self.listener_callback,
             10)
-        self.subscription  # prevent unused variable warning
+        self.subscription  
         self.palindromeCounter = 0
         self.detectedCounter = 0
 
+        # client node
         self.cli = self.create_client(Empty, 'land_drone')
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service not available, waiting again...')
@@ -55,10 +60,7 @@ class MinimalSubscriber(Node):
             start += 1
             end -= 1 
         return True
-
-        #or just use msg_string = msg_string[::-1]
     
-
 
 def main(args=None):
     rclpy.init(args=args)
@@ -67,10 +69,8 @@ def main(args=None):
 
     rclpy.spin(minimal_subscriber)
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
     minimal_subscriber.destroy_node()
+
     rclpy.shutdown()
 
 

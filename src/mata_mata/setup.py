@@ -27,7 +27,6 @@ setup(
             'talker = mata_mata.publisher_member_function:main',
             'listener = mata_mata.subscriber_member_function:main', 
             'service = mata_mata.service_member_function:main',
-            'client = mata_mata.client_member_function:main',
         ],
     },
 )
